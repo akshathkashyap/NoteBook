@@ -1,0 +1,152 @@
+:root {
+  /* Light1 */
+  --text: #02111d;
+  --background: #cfe8fc;
+  --transparent-bg: #cfe8fcdd;
+  --primary: #063d6a;
+  --secondary: #d8ecfd;
+  --accent: #1690f3;
+  /* Light2 */
+  /* --text: #040b09;
+  --background: #fbfefd;
+  --transparent-bg: #fbfefddd;
+  --primary: #40b3c4;
+  --secondary: #ebf0f9;
+  --accent: #4f7cc9; */
+  /* Light3 */
+  /* --text: #010404;
+  --background: #e9f9fc;
+  --transparent-bg: #e9f9fcdd;
+  --primary: #9ee4f0;
+  --secondary: #cef1f7;
+  --accent: #22bdd8; */
+
+  --font-fm: 'Inter', sans-serif;
+  --font-lg: 1.6rem;
+  --font-md: 1rem;
+  --font-sm: 0.8rem;
+  --icon-sm: 1.2rem;
+  --border-rd-sm: 2px;
+  --border-rd-md: 5px;
+  --border-rd-lg: 8px;
+}
+
+[data-theme="dark"] {
+  /* Dark1 */
+  --text: #e2f1fd;
+  --background: #031c30;
+  --transparent-bg: #031c30dd;
+  --primary: #94ccf9;
+  --secondary: #021627;
+  --accent: #0c85e9;
+  /* Dark2 */
+  /* --text: #f4fbf9;
+  --background: #010403;
+  --transparent-bg: #010403dd;
+  --primary: #3baebf;
+  --secondary: #060b14;
+  --accent: #3663b0; */
+  /* Dark3 */
+  /* --text: #fbfefe;
+  --background: #031416;
+  --transparent-bg: #031416dd;
+  --primary: #0f5561;
+  --secondary: #082a30;
+  --accent: #27c2dd; */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+}
+
+#root {
+  position: relative;
+  font-family: var(--font-fm);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+
+input {
+  font-size: var(--font-sm);
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  color: var(--text);
+  background-color: var(--background);
+  border: none;
+  border-radius: var(--border-rd-md);
+}
+
+input:focus {
+  font-size: var(--font-sm);
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  color: var(--text);
+  background-color: var(--background);
+  border: none;
+  border-radius: var(--border-rd-md);
+}
+
+input[type = 'button'] {
+  cursor: pointer;
+  font-size: var(--font-md);
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  color: var(--text);
+  background-color: var(--accent);
+  border: none;
+  border-radius: var(--border-rd-md);
+}
+
+input[type = 'button']:hover {
+  transform: translateY(-2px);
+  box-shadow: 1px 1px 2px var(--text) !important;
+}
+
+span.icon {
+  cursor: pointer;
+}
+
+span.icon:hover {
+  animation: iconHover 0.2s ease-out 0s 1 forwards;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--secondary);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  outline: solid var(--text) 1px;
+}
+
+
+@keyframes iconHover {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  33% {
+    transform: rotateZ(15deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}

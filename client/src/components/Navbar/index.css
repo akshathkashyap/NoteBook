@@ -1,0 +1,32 @@
+nav.navbar {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  height: 4rem;
+}
+
+nav.navbar > * {
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+nav.navbar > h1 {
+  margin: 0;
+  padding: 0 1.5rem;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: var(--accent);
+  border-bottom-right-radius: 8px;
+}
+
+nav.navbar > span.icon:nth-child(2) {
+  margin-left: 1rem;
+}
+
+nav.navbar > span.icon {
+  margin: 0.2rem;
+  padding: 0.3rem;
+}

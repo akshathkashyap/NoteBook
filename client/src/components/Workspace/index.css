@@ -1,0 +1,47 @@
+section.workspace {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: calc(100vh - 4rem);
+}
+
+
+section.workspace > section {
+  border-radius: var(--border-rd-lg);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary);
+  box-shadow: 1px 1px 2px var(--primary);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#sidebar {
+  position: relative;
+  width: calc(20% - 5px);
+}
+
+#workspaceDivider {
+  cursor: col-resize;
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  height: calc(100% - 16px);
+  width: 10px;
+  margin: 0;
+  padding: 0;
+  transition: 0.3s;
+  z-index: 2;
+}
+
+#workspaceDivider:hover {
+  border-left: solid 1px var(--primary);
+  border-right: solid 1px var(--primary);
+}
+
+#desk {
+  position: relative;
+  width: calc(80% - 5px);
+}

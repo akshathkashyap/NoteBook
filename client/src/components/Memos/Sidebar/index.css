@@ -1,0 +1,14 @@
+section.sidebar > div.sidebar-center-align > h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  margin: 0;
+  padding: 1rem 0;
+  text-wrap: nowrap;
+}
+
+section.sidebar > div.sidebar-center-align > h4 > span.icon-spacer > span.icon {
+  color: var(--text);
+}

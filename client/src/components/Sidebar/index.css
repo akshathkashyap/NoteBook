@@ -1,0 +1,35 @@
+section.sidebar {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 3rem;
+}
+
+section.sidebar * {
+  user-select: none
+}
+
+section.sidebar span.icon-spacer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 4rem;
+}
+
+section.sidebar  span.icon-spacer > span.icon {
+  color: transparent;
+  font-size: var(--icon-sm);
+  line-height: var(--font-sm);
+  transition: 0.5s;
+}
+
+section.sidebar > div.sidebar-center-align {
+  width: fit-content;
+}
+
+section.sidebar > div.sidebar-center-align > span.header-spacer {
+  display: block;
+  height: 1rem;
+}

@@ -1,0 +1,56 @@
+section.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+section.login > section {
+  box-sizing: border-box;
+  width: 24rem;
+  height: 24rem;
+  box-shadow: 1px 1px 2px var(--accent);
+}
+
+section.login > section.login-display {
+  background-position: center;
+  background-size: contain;
+  border-radius: var(--border-rd-lg) 0 0 var(--border-rd-lg);
+}
+
+section.login > section.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  color: var(--text);
+  background: var(--secondary);
+  border-radius: 0 var(--border-rd-lg) var(--border-rd-lg) 0;
+}
+
+section.login > section.login-form > h1 {
+  font-size: 2rem;
+  line-height: 2rem;
+  margin: 2rem 0;
+}
+
+section.login > section.login-form > form.login {
+  display: flex;
+  flex-direction: column;
+}
+
+section.login > section.login-form > form.login > input {
+  margin: 0.5rem 0;
+  box-shadow: 1px 1px 2px var(--accent);
+  transition: 0.2s;
+}
+
+section.login > section.login-form > form.login > input[type = 'button'] {
+  margin: 2rem 0;
+  transition: 0.2s;
+}
+
+/* section.login > section.login-form > form.login > input[type = 'button']:hover {
+  box-shadow: 1px 1px 2px var(--text);
+} */

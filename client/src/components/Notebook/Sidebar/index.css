@@ -1,0 +1,86 @@
+section.sidebar > div.sidebar-center-align > h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  margin: 0;
+  padding: 1rem 0;
+  text-wrap: nowrap;
+}
+
+section.sidebar > div.sidebar-center-align > h4 > span.icon-spacer > span.icon {
+  color: var(--text);
+}
+
+section.sidebar > div.sidebar-center-align > dl {
+  position: relative;
+  display: block;
+  margin: 0;
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt {
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  text-wrap: nowrap;
+  margin: 0;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt::before {
+  content: '';
+  position: absolute;
+  top: 0.4rem;
+  left: -1.5rem;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-right: solid 1px var(--text);
+  border-bottom: solid 1px var(--text);
+  border-radius: var(--border-rd-sm);
+  transition: 0.2s;
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt:hover > span.icon-spacer > span.icon {
+  color: var(--text);
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt.collapsed::before {
+  transform: translateY(0.33rem) translateX(-0.2rem) rotateZ(-45deg);
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt.expanded::before {
+  transform: translateY(0.2rem) rotateZ(45deg);
+}
+
+section.sidebar > div.sidebar-center-align > dl > dd {
+  cursor: pointer;
+  text-wrap: nowrap;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-rd-sm);
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+section.sidebar > div.sidebar-center-align > dl > dd:hover {
+  background-color: var(--transparent-bg);
+}
+
+section.sidebar > div.sidebar-center-align > dl > dd.selected {
+  background-color: var(--accent);
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt.collapsed ~ dd {
+  display: none;
+}
+
+section.sidebar > div.sidebar-center-align > dl > dt.expanded ~ dd {
+  display: block;
+}
