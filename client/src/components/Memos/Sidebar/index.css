@@ -6,9 +6,54 @@ section.sidebar > div.sidebar-center-align > h4 {
   line-height: var(--font-md);
   margin: 0;
   padding: 1rem 0;
+  width: 100%;
   text-wrap: nowrap;
 }
 
 section.sidebar > div.sidebar-center-align > h4 > span.icon-spacer > span.icon {
   color: var(--text);
+}
+
+section.sidebar > div.sidebar-center-align > h4 > span.icon-spacer > span.icon.adding {
+  visibility: hidden;
+}
+
+section.sidebar > div.sidebar-center-align > p.note {
+  box-sizing: border-box;
+  font-size: var(--font-md);
+  font-style: italic;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  line-height: var(--font-md);
+  margin: 0;
+  padding: 1rem 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+section.sidebar > div.sidebar-center-align > ul.memo-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+section.sidebar > div.sidebar-center-align > ul.memo-list > li.memo {
+  cursor: pointer;
+  box-sizing: border-box;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-rd-sm);
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+section.sidebar > div.sidebar-center-align > ul.memo-list > li.memo:hover {
+  background-color: var(--transparent-bg);
+}
+
+section.sidebar > div.sidebar-center-align > ul.memo-list > li.memo.selected {
+  background-color: var(--accent);
 }

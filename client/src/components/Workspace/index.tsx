@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import Sidebar from '../Sidebar';
+import Desk from '../Desk';
 import './index.css';
 
 const Workspace: FC = () => {
@@ -60,7 +61,9 @@ const Workspace: FC = () => {
         id='workspaceDivider'
         onMouseDown={ setDividerPos }
       ></div>
-      <section ref={ deskRef } id='desk'></section>
+      <section ref={ deskRef } id='desk'>
+        <Desk />
+      </section>
     </section>
   );
 };

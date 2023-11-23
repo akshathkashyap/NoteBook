@@ -71,6 +71,7 @@ export const createMemo = async (request: Request, response: Response): Promise<
     responseObject.message = 'memo created successfully';
     responseObject.memo = {
       id: newMemo._id,
+      recipients: newMemo.recipients,
       name,
       priority: newMemo.priority,
       updatedAt: newMemo.updatedAt,

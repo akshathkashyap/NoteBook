@@ -72,6 +72,7 @@ const createMemo = (request, response) => __awaiter(void 0, void 0, void 0, func
         responseObject.message = 'memo created successfully';
         responseObject.memo = {
             id: newMemo._id,
+            recipients: newMemo.recipients,
             name,
             priority: newMemo.priority,
             updatedAt: newMemo.updatedAt,

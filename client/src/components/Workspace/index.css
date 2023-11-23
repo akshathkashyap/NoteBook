@@ -20,7 +20,7 @@ section.workspace > section {
 
 #sidebar {
   position: relative;
-  width: calc(20% - 5px);
+  width: calc(25% - 5px);
 }
 
 #workspaceDivider {
@@ -43,5 +43,5 @@ section.workspace > section {
 
 #desk {
   position: relative;
-  width: calc(80% - 5px);
+  width: calc(75% - 5px);
 }
