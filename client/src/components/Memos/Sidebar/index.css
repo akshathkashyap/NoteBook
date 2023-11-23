@@ -1,20 +1,38 @@
-section.sidebar > div.sidebar-center-align > h4 {
+section.sidebar > div.sidebar-center-align > h4.memo-tab {
+  cursor: pointer;
+  box-sizing: border-box;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: var(--font-md);
+  text-wrap: nowrap;
   line-height: var(--font-md);
   margin: 0;
-  padding: 1rem 0;
+  padding: 1rem;
   width: 100%;
-  text-wrap: nowrap;
+  border-radius: var(--border-rd-sm);
 }
 
-section.sidebar > div.sidebar-center-align > h4 > span.icon-spacer > span.icon {
+section.sidebar > div.sidebar-center-align > h4.memo-tab:hover {
+  background-color: var(--transparent-bg);
+}
+
+section.sidebar > div.sidebar-center-align > h4.memo-tab.selected::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--accent);
+}
+
+section.sidebar > div.sidebar-center-align > h4.memo-tab > span.icon-spacer > span.icon {
   color: var(--text);
 }
 
-section.sidebar > div.sidebar-center-align > h4 > span.icon-spacer > span.icon.adding {
+section.sidebar > div.sidebar-center-align > h4.memo-tab > span.icon-spacer > span.icon.adding {
   visibility: hidden;
 }
 
@@ -25,7 +43,7 @@ section.sidebar > div.sidebar-center-align > p.note {
   text-wrap: nowrap;
   text-overflow: ellipsis;
   line-height: var(--font-md);
-  margin: 0;
+  margin: 0 1rem;
   padding: 1rem 0;
   width: 100%;
   overflow: hidden;
@@ -35,6 +53,7 @@ section.sidebar > div.sidebar-center-align > ul.memo-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 section.sidebar > div.sidebar-center-align > ul.memo-list > li.memo {
@@ -43,7 +62,6 @@ section.sidebar > div.sidebar-center-align > ul.memo-list > li.memo {
   text-wrap: nowrap;
   text-overflow: ellipsis;
   width: 100%;
-  margin: 0;
   padding: 0.5rem 1rem;
   border-radius: var(--border-rd-sm);
   transition: 0.2s;

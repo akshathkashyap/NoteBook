@@ -1,11 +1,20 @@
 import { FC, useEffect, useState } from 'react';
-import { MemoType, fetchAuthorMemos, fetchAuthorsReceivedMemos } from './utils';
+import { MemoType, getRecentMemosList, fetchAuthorMemos, fetchAuthorsReceivedMemos } from '../utils';
+import { updateSessionStorage, fetchSessionStorage } from '../../../utils';
 import './index.css';
 
 const Sidebar: FC = () => {
-  const [authorMemos, setAutherMemos] = useState<MemoType[]>([]);
-  const [authorReceivedMemos, setAutherReceivedMemos] = useState<MemoType[]>([]);
-  const [authorSentMemos, setAutherSentMemos] = useState<MemoType[]>([]);
+  const usersMemos: MemoType[] = fetchSessionStorage.memo.usersMemos();
+  const receivedMemos: MemoType[] = fetchSessionStorage.memo.receivedMemos();
+  const sentMemos: MemoType[] = fetchSessionStorage.memo.sentMemos();
+
+  const recentUsersMemos: MemoType[] = getRecentMemosList(usersMemos);
+  const recentReceivedMemos: MemoType[] = getRecentMemosList(receivedMemos);
+  const recentSentMemos: MemoType[] = getRecentMemosList(sentMemos);
+
+  const [authorMemos, setAutherMemos] = useState<MemoType[]>(recentUsersMemos);
+  const [authorReceivedMemos, setAutherReceivedMemos] = useState<MemoType[]>(recentReceivedMemos);
+  const [authorSentMemos, setAutherSentMemos] = useState<MemoType[]>(getRecentMemosList(recentSentMemos));
 
   const addMemo = (event: React.MouseEvent) => {
     console.log('adding')
@@ -18,8 +27,8 @@ const Sidebar: FC = () => {
 
   const updateUsersMemos = async (): Promise<void> => {
     const memos: MemoType[] = await fetchAuthorMemos();
-    const personal: MemoType[] = [];
-    const sent: MemoType[] = [];
+    let personal: MemoType[] = [];
+    let sent: MemoType[] = [];
 
     memos.forEach((memo: MemoType) => {
       if (!memo.recipients.length) {
@@ -29,13 +38,30 @@ const Sidebar: FC = () => {
       sent.push(memo);
     });
 
+    updateSessionStorage.memo.usersMemos(personal);
+    updateSessionStorage.memo.sentMemos(sent);
+
+    personal = getRecentMemosList(personal);
+    sent = getRecentMemosList(sent);
+
     setAutherMemos(personal);
     setAutherSentMemos(sent);
   };
 
   const updateReceivedMemos = async (): Promise<void> => {
-    const received: MemoType[] = await fetchAuthorsReceivedMemos();
+    let received: MemoType[] = await fetchAuthorsReceivedMemos();
+    updateSessionStorage.memo.receivedMemos(received);
+
+    received = getRecentMemosList(received);
     setAutherReceivedMemos(received);
+  };
+
+  const handleMemoTabSelection = (event: React.MouseEvent) => {
+    const memoTabs: NodeListOf<Element> = document.querySelectorAll('section.sidebar > div.sidebar-center-align > h4.memo-tab.selected');
+    memoTabs.forEach((memoTab: Element) => {
+      memoTab.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
   };
 
   useEffect(() => {
@@ -54,7 +80,7 @@ const Sidebar: FC = () => {
 
   return (
     <>
-      <h4>My Memos
+      <h4 className='memo-tab' onClick={ handleMemoTabSelection }>My Memos
         <span className='icon-spacer'>
           <span className='material-symbols-outlined icon' onClick={ addMemo }>
             note_stack_add
@@ -77,7 +103,7 @@ const Sidebar: FC = () => {
         )
       }
       <span className='header-spacer'></span>
-      <h4>Received</h4>
+      <h4 className='memo-tab' onClick={ handleMemoTabSelection }>Received</h4>
       {
         authorReceivedMemos.length ? (
           <ul className='memo-list'>
@@ -94,7 +120,7 @@ const Sidebar: FC = () => {
         )
       }
       <span className='header-spacer'></span>
-      <h4>Sent</h4>
+      <h4 className='memo-tab' onClick={ handleMemoTabSelection }>Sent</h4>
       {
         authorSentMemos.length ? (
           <ul className='memo-list'>

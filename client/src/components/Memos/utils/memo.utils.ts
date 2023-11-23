@@ -1,4 +1,4 @@
-import RequestApi from "../../../../lib/RequestApi";
+import RequestApi from "../../../lib/RequestApi";
 
 export interface MemoType {
   id: string;
@@ -16,6 +16,19 @@ const APIEndpoints = {
   update: '/memo/update',
   send: '/memo/send',
   delete: '/memo'
+};
+
+export const getRecentMemosList = (memos: MemoType[]): MemoType[] => {
+  if (!memos.length) return [];
+
+  memos.sort((a: MemoType, b: MemoType): number => {
+    const tsa: number = new Date(a.updatedAt).getTime();
+    const tsb: number = new Date(b.updatedAt).getTime();
+
+    return tsb - tsa;
+  });
+
+  return memos.slice(0, 5);
 };
 
 export const createMemo = async (): Promise<MemoType | null> => {

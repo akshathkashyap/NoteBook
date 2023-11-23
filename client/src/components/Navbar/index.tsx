@@ -18,7 +18,8 @@ const Navbar: FC = () => {
   const handleClick = (event: React.SyntheticEvent<HTMLHeadingElement| HTMLSpanElement>) => {
     const elemId: string = event.currentTarget.id as 'notebook' | 'memos' | 'logout' | 'settings';
     if (elemId === 'logout') {
-      window.localStorage.removeItem('token');
+      localStorage.removeItem('token');
+      sessionStorage.clear();
       dispatch(setToken(null));
       return;
     }
