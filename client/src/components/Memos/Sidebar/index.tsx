@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { MemoType, getRecentMemosList, fetchAuthorMemos, fetchAuthorsReceivedMemos } from '../utils';
+import { MemoType, sortMemosList, fetchAuthorMemos, fetchAuthorsReceivedMemos } from '../utils';
 import { updateSessionStorage, fetchSessionStorage } from '../../../utils';
 import './index.css';
 
@@ -8,13 +8,13 @@ const Sidebar: FC = () => {
   const receivedMemos: MemoType[] = fetchSessionStorage.memo.receivedMemos();
   const sentMemos: MemoType[] = fetchSessionStorage.memo.sentMemos();
 
-  const recentUsersMemos: MemoType[] = getRecentMemosList(usersMemos);
-  const recentReceivedMemos: MemoType[] = getRecentMemosList(receivedMemos);
-  const recentSentMemos: MemoType[] = getRecentMemosList(sentMemos);
+  const recentUsersMemos: MemoType[] = sortMemosList(usersMemos, 5);
+  const recentReceivedMemos: MemoType[] = sortMemosList(receivedMemos, 5);
+  const recentSentMemos: MemoType[] = sortMemosList(sentMemos, 5);
 
   const [authorMemos, setAutherMemos] = useState<MemoType[]>(recentUsersMemos);
   const [authorReceivedMemos, setAutherReceivedMemos] = useState<MemoType[]>(recentReceivedMemos);
-  const [authorSentMemos, setAutherSentMemos] = useState<MemoType[]>(getRecentMemosList(recentSentMemos));
+  const [authorSentMemos, setAutherSentMemos] = useState<MemoType[]>(recentSentMemos);
 
   const addMemo = (event: React.MouseEvent) => {
     console.log('adding')
@@ -41,8 +41,8 @@ const Sidebar: FC = () => {
     updateSessionStorage.memo.usersMemos(personal);
     updateSessionStorage.memo.sentMemos(sent);
 
-    personal = getRecentMemosList(personal);
-    sent = getRecentMemosList(sent);
+    personal = sortMemosList(personal, 5);
+    sent = sortMemosList(sent, 5);
 
     setAutherMemos(personal);
     setAutherSentMemos(sent);
@@ -52,12 +52,14 @@ const Sidebar: FC = () => {
     let received: MemoType[] = await fetchAuthorsReceivedMemos();
     updateSessionStorage.memo.receivedMemos(received);
 
-    received = getRecentMemosList(received);
+    received = sortMemosList(received, 5);
     setAutherReceivedMemos(received);
   };
 
   const handleMemoTabSelection = (event: React.MouseEvent) => {
-    const memoTabs: NodeListOf<Element> = document.querySelectorAll('section.sidebar > div.sidebar-center-align > h4.memo-tab.selected');
+    const memoTabs: NodeListOf<Element> = document.querySelectorAll(
+      'section.sidebar > div.sidebar-center-align > h4.memo-tab.selected'
+    );
     memoTabs.forEach((memoTab: Element) => {
       memoTab.classList.remove('selected');
     });

@@ -18,8 +18,9 @@ const APIEndpoints = {
   delete: '/memo'
 };
 
-export const getRecentMemosList = (memos: MemoType[]): MemoType[] => {
-  if (!memos.length) return [];
+export const sortMemosList = (memos: MemoType[], length?: number): MemoType[] => {
+  if (length === undefined) length = memos.length;
+  if (!length) return [];
 
   memos.sort((a: MemoType, b: MemoType): number => {
     const tsa: number = new Date(a.updatedAt).getTime();
@@ -28,7 +29,7 @@ export const getRecentMemosList = (memos: MemoType[]): MemoType[] => {
     return tsb - tsa;
   });
 
-  return memos.slice(0, 5);
+  return memos.slice(0, length);
 };
 
 export const createMemo = async (): Promise<MemoType | null> => {

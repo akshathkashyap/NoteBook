@@ -1,0 +1,38 @@
+section.memos-desk {
+  position: relative;
+  width: 100%;
+}
+
+section.memos-desk > div.cols-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-shrink: 0;
+  gap: 1rem;
+  width: 100%;
+}
+
+section.memos-desk > div.cols-container  > section.col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 1rem 0;
+  width: max-content;
+}
+
+section.memos-desk > div.cols-container  > section.col > span.memo {
+  cursor: pointer;
+  box-sizing: border-box;
+  display: block;
+  min-height: 15rem;
+  margin-bottom: 1rem;
+  width: 20rem;
+  border-radius: var(--border-rd-lg);
+  background-color: var(--background);
+}
+
+section.memos-desk > div.cols-container  > section.col > span.memo:hover {
+  border: solid var(--primary) 1px;
+}
