@@ -10,10 +10,10 @@ nav.navbar {
 
 nav.navbar > * {
   box-sizing: border-box;
-  cursor: pointer;
 }
 
 nav.navbar > h1 {
+  cursor: pointer;
   margin: 0;
   padding: 0 1.5rem;
   height: 4rem;
@@ -22,11 +22,18 @@ nav.navbar > h1 {
   border-bottom-right-radius: 8px;
 }
 
-nav.navbar > span.icon:nth-child(2) {
-  margin-left: 1rem;
+nav.navbar > section.navbar-section {
+  padding: 0 1rem;
 }
 
-nav.navbar > span.icon {
+nav.navbar > section.navbar-section > span.icon {
+  cursor: pointer;
   margin: 0.2rem;
   padding: 0.3rem;
+}
+
+#tabSpacer {
+  width: 1px;
+  height: 50%;
+  background-color: var(--primary);
 }

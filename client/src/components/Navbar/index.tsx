@@ -38,15 +38,20 @@ const Navbar: FC = () => {
     <>
       <nav className='navbar'>
         <h1 id='notebook' onClick={ handleClick }>NoteBook</h1>
-        <span id='memos' className='material-symbols-outlined icon' onClick={ handleClick }>
-          note_stack
-        </span>
-        <span id='logout' className="material-symbols-outlined icon" onClick={ handleClick }>
-          logout
-        </span>
-        <span id='settings' className='material-symbols-outlined icon' onClick={ handleClick }>
-          settings
-        </span>
+        <section className='navbar-section'>
+          <span id='memos' className='material-symbols-outlined icon' onClick={ handleClick }>
+            note_stack
+          </span>
+        </section>
+        <span id='tabSpacer'></span>
+        <section className='navbar-section'>
+          <span id='logout' className="material-symbols-outlined icon" onClick={ handleClick }>
+            logout
+          </span>
+          <span id='settings' className='material-symbols-outlined icon' onClick={ handleClick }>
+            settings
+          </span>
+        </section>
       </nav>
       <Settings isSettingsOpen={ isSettingsOpen } setIsSettingsOpen={ setIsSettingsOpen } />
     </>

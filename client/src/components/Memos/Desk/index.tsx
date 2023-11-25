@@ -1,4 +1,5 @@
 import { FC , useRef, useEffect, useState } from 'react';
+import Memo from '../Memo';
 import { MemoType, sortMemosList, getRem } from '../utils';
 import './index.css';
 
@@ -61,11 +62,12 @@ const tempMemos: MemoType[] = [
   }
 ]
 
-const sortedTempMemos: MemoType[] = sortMemosList(tempMemos);
-
 const Desk: FC = () => {
   const [numCols, setNumCols] = useState<number>(0);
+  const [colsMemos, setColsMemos] = useState<MemoType[][]>([]);
+  const [memos, setMemos] = useState<MemoType[]>(sortMemosList(tempMemos));
   const colsContainerRef = useRef<HTMLDivElement>(null);
+
 
   const updateNumCols = () => {
     const colsCont = colsContainerRef.current;
@@ -100,23 +102,45 @@ const Desk: FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!numCols || !memos.length) return;
+
+    const newColsMemos: MemoType[][] = [];
+
+    let colIndex: number = 0;
+    let memoIndex: number = colIndex;
+
+    while (colIndex < numCols) {
+      if (colIndex === memoIndex) newColsMemos.push([]);;
+
+      if (memoIndex >= memos.length) {
+        colIndex++;
+        memoIndex = colIndex;
+        continue;
+      }
+
+      newColsMemos[colIndex].push(memos[memoIndex]);
+
+      memoIndex += numCols;
+    }
+
+    setColsMemos(newColsMemos);
+  }, [memos, numCols]);
+
   return (
     <section className='memos-desk'>
       <div ref={ colsContainerRef } className='cols-container' onResize={ updateNumCols }>
         {
-          Array.from(Array(numCols)).map((_, index) => {
+          Array.from(Array(numCols)).map((_, index: number) => {
             return (
               <section key={`memoDeskCol${index}`} className='col'>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
-                <span className='memo'></span>
+                {
+                  colsMemos.length === numCols && colsMemos[index].map((memo: MemoType) => {
+                    return (
+                      <Memo memo={ memo } />
+                    );
+                  })
+                }
               </section>
             );
           })
