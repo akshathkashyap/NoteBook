@@ -1,15 +1,17 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
+import MemoCard from './components/MemoCard';
 import { MemoType } from '../utils';
 import './index.css';
 
 interface MemoPropsType {
   memo: MemoType
+  setMemo: React.Dispatch<React.SetStateAction<MemoType[]>>
 }
 
-const Memo: FC<MemoPropsType> = ({ memo }) => {
+const Memo: FC<MemoPropsType> = ({ memo, setMemo }) => {
   return (
-    <span key={ memo.id } className='memo'>
-      <h1>{ memo.name }</h1>
+    <span className='memo'>
+      <MemoCard memo={ memo }/>
     </span>
   );
 };

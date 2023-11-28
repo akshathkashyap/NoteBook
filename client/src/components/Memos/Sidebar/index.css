@@ -57,7 +57,7 @@ section.sidebar > div.sidebar-center-align > ul.memo-list {
 }
 
 section.sidebar > div.sidebar-center-align > ul.memo-list > li.memo {
-  cursor: pointer;
+  cursor: zoom-in;
   box-sizing: border-box;
   text-wrap: nowrap;
   text-overflow: ellipsis;

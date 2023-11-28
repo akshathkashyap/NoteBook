@@ -1,0 +1,54 @@
+section.memo-card {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 13rem;
+}
+
+section.memo-card > h1.memo-name {
+  font-size: var(--font-lg);
+  line-height: var(--font-lg);
+  margin: 1rem 0 1rem 0;
+}
+
+section.memo-card > span.memo-content {
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  margin: 0 0 1rem 0;
+}
+
+section.memo-card > span.memo-priority {
+  box-sizing: border-box;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: -2rem;
+  left: -1rem;
+  padding: 0 1rem;
+  width: calc(100% + 2rem);
+  height: 1rem;
+  font-size: var(--font-sm);
+  line-height: var(--font-sm);
+}
+
+section.memo-card > span.memo-priority.high {
+  background-color: var(--p1);
+}
+
+section.memo-card > span.memo-priority.medium {
+  background-color: var(--p2);
+}
+
+section.memo-card > span.memo-priority.low {
+  background-color: var(--p3);
+}
+
+section.memo-card > span.memo-priority > span.icon-spacer > span.icon {
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  margin-left: 0.25rem;
+  color: transparent;
+}
+
+section.memo-card:hover > span.memo-priority > span.icon-spacer > span.icon {
+  color: var(--text);
+}

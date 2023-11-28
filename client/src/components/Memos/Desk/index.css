@@ -1,5 +1,4 @@
 section.memos-desk {
-  position: relative;
   width: 100%;
 }
 
@@ -18,6 +17,13 @@ section.memos-desk > div.cols-container  > section.col {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  padding: 1rem 0;
+  padding: 2rem 0;
   width: max-content;
+}
+
+section.memos-desk > div.cols-container  > span.no-memos {
+  font-style: italic;
+  font-size: var(--font-lg);
+  line-height: var(--font-lg);
+  margin-top: 1rem;
 }

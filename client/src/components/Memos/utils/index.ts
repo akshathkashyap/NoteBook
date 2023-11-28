@@ -1,4 +1,4 @@
-export { sortMemosList, createMemo, fetchAuthorMemos, fetchAuthorsReceivedMemos } from './memo.utils';
+export { sortMemosList, createMemo, fetchAuthorMemos, fetchAuthorsReceivedMemos, deleteMemo } from './memo.utils';
 export type { MemoType } from './memo.utils';
 
-export { getRem } from './desk.utils';
+export { getRem, fetchDeskMemos } from './desk.utils';

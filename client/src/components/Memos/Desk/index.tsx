@@ -1,73 +1,23 @@
-import { FC , useRef, useEffect, useState } from 'react';
+import { FC , useRef, useEffect, useState, Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/rootReducer';
+import { MemoType, sortMemosList, getRem, fetchDeskMemos } from '../utils';
 import Memo from '../Memo';
-import { MemoType, sortMemosList, getRem } from '../utils';
 import './index.css';
-
-const tempMemos: MemoType[] = [
-  {
-      id: '655fc954f7331937ccb1022e',
-      recipients: [],
-      name: 'Final Memo',
-      priority: 3,
-      updatedAt: new Date('2023-11-23T21:51:16.705Z'),
-      content: 'This is the content of the memo'
-  },
-  {
-      id: '655fbf4bf7331937ccb0fe00',
-      recipients: [],
-      name: 'Actually this one should',
-      priority: 3,
-      updatedAt: new Date('2023-11-23T21:08:27.638Z'),
-      content: 'This is the content of the memo'
-  },
-  {
-      id: '655fbf3bf7331937ccb0fdf6',
-      recipients: [],
-      name: 'This should show up last',
-      priority: 3,
-      updatedAt: new Date('2023-11-23T21:08:11.774Z'),
-      content: 'This is the content of the memo'
-  },
-  {
-      id: '655fbf1ef7331937ccb0fdea',
-      recipients: [],
-      name: 'Might delete this one later',
-      priority: 3,
-      updatedAt: new Date('2023-11-23T21:07:42.803Z'),
-      content: 'This is the content of the memo'
-  },
-  {
-      id: '655fbf12f7331937ccb0fde2',
-      recipients: [],
-      name: 'This also a memo',
-      priority: 3,
-      updatedAt: new Date('2023-11-23T21:07:30.507Z'),
-      content: 'This is the content of the memo'
-  },
-  {
-      id: '655fbf02f7331937ccb0fdda',
-      recipients: [],
-      name: 'This a memo',
-      priority: 3,
-      updatedAt: new Date('2023-11-23T21:07:14.253Z'),
-      content: 'This is the content of the memo'
-  },
-  {
-      id: '655c93eb0dc6ed41348311b5',
-      recipients: [],
-      name: 'This is the third memo',
-      priority: 3,
-      updatedAt: new Date('2023-11-21T11:53:13.621Z'),
-      content: 'This is actually the content of the third memo'
-  }
-]
+import { setRemovingMemo } from '../../../store/slices/memoSlice';
 
 const Desk: FC = () => {
-  const [numCols, setNumCols] = useState<number>(0);
-  const [colsMemos, setColsMemos] = useState<MemoType[][]>([]);
-  const [memos, setMemos] = useState<MemoType[]>(sortMemosList(tempMemos));
-  const colsContainerRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+  const memoTab = useSelector((state: RootState) => state.memo.memoTab);
+  const isRemovingMemo = useSelector((state: RootState) => state.memo.removingMemo);
 
+  const deskMemosRef = useRef<MemoType[]>(fetchDeskMemos(memoTab));
+  const sortedDeskMemosRef = useRef<MemoType[]>(sortMemosList(deskMemosRef.current, 'latest-last'));
+
+  const [numCols, setNumCols] = useState<number>(1);
+  const [colsMemos, setColsMemos] = useState<MemoType[][]>([]);
+  const [memos, setMemos] = useState<MemoType[]>(sortedDeskMemosRef.current);
+  const colsContainerRef = useRef<HTMLDivElement>(null);
 
   const updateNumCols = () => {
     const colsCont = colsContainerRef.current;
@@ -103,8 +53,6 @@ const Desk: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!numCols || !memos.length) return;
-
     const newColsMemos: MemoType[][] = [];
 
     let colIndex: number = 0;
@@ -127,23 +75,55 @@ const Desk: FC = () => {
     setColsMemos(newColsMemos);
   }, [memos, numCols]);
 
+  useEffect(() => {
+    if (!memoTab) return;
+    
+    deskMemosRef.current = fetchDeskMemos(memoTab);
+    sortedDeskMemosRef.current = sortMemosList(deskMemosRef.current, 'latest-last');
+
+    setMemos(sortedDeskMemosRef.current);
+    
+    const deskReloader = setInterval(() => {
+      const updatedDeskMemos: MemoType[] = fetchDeskMemos(memoTab);
+      const updatedDeskMemosString: string = JSON.stringify(updatedDeskMemos);
+      const currentDeskMemosString: string = JSON.stringify(deskMemosRef.current);
+
+      if (currentDeskMemosString === updatedDeskMemosString) return;
+
+      deskMemosRef.current = updatedDeskMemos;
+      sortedDeskMemosRef.current = sortMemosList(deskMemosRef.current, 'latest-last');
+      
+      setMemos(sortedDeskMemosRef.current);
+    }, 5000);
+
+    if (isRemovingMemo) dispatch(setRemovingMemo(false));
+
+    return () => {
+      clearInterval(deskReloader);
+    };
+  }, [dispatch, memoTab, isRemovingMemo]);
+
   return (
     <section className='memos-desk'>
       <div ref={ colsContainerRef } className='cols-container' onResize={ updateNumCols }>
         {
-          Array.from(Array(numCols)).map((_, index: number) => {
+          memos.length ? Array.from(Array(numCols)).map((_, index: number) => {
             return (
               <section key={`memoDeskCol${index}`} className='col'>
                 {
                   colsMemos.length === numCols && colsMemos[index].map((memo: MemoType) => {
                     return (
-                      <Memo memo={ memo } />
+                      <Fragment key={ memo.id }>
+                        <Memo memo={ memo } setMemo={ setMemos } />
+                      </Fragment>
                     );
                   })
                 }
               </section>
             );
-          })
+          }) : (
+            <span className='no-memos'>Nothing to show here...</span>
+          )
         }
       </div>
     </section>

@@ -1,0 +1,28 @@
+span.memo > section.memo-menu {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background-color: var(--background);
+  box-shadow: 1px 1px 2px var(--text);
+  z-index: 2;
+}
+
+span.memo > section.memo-menu > span.menu-item {
+  cursor: pointer;
+  color: var(--primary);
+}
+
+span.memo > section.memo-menu > span.menu-item.active {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+
+.tiptap {
+  margin: 0;
+  padding: 0.5rem;
+  outline: none;
+  border: none;
+}

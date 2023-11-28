@@ -17,7 +17,7 @@ export const createTopic = async (): Promise<TopicType | null> => {
   const requesterApi = new RequestApi({ endpoint });
   const response: Record<string, string> | null = await requesterApi.post({ data: {} });
   if (!response) {
-    console.error(`failed to create new topic`);
+    console.error('failed to create new topic');
     return null;
   }
 
@@ -40,13 +40,12 @@ export const fetchAuthorTopics = async (): Promise<TopicType[]> => {
   return topics;
 };
 
-
 export const deleteTopic = async (topicId: string): Promise<boolean> => {
   const endpoint: string = APIEndpoints.delete;
   const requesterApi = new RequestApi({ endpoint });
   const response: Record<string, string> | null = await requesterApi.delete({ data: { id: topicId } });
   if (!response) {
-    console.error(`failed to fetch author's topics`);
+    console.error(`failed to fetch author's topic`);
     return false;
   }
 
