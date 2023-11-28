@@ -160,7 +160,7 @@ const updateMemo = (request, response) => __awaiter(void 0, void 0, void 0, func
     const responseObject = { message: '' };
     try {
         const { id, name, priority, content } = request.body;
-        if (!id || (!name && !content)) {
+        if (!id || (!name && !content && !priority)) {
             responseObject.message = `empty or missing request body parameters: received { id: ${id}, name: ${name}, content: ${content} }`;
             throw new Error(responseObject.message);
         }

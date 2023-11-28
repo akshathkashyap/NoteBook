@@ -3,7 +3,7 @@ span.memo {
   position: relative;
   display: block;
   min-height: 15rem;
-  max-height: 23.5rem;
+  max-height: 31rem;
   margin-bottom: 1rem;
   padding: 1rem;
   width: 20rem;
@@ -19,11 +19,64 @@ span.memo::-webkit-scrollbar-track {
   border-radius: 0 8px 8px 0;
 }
 
-span.memo:hover {
+span.memo:hover,
+span.memo.editing {
   outline: solid var(--primary) 1px;
 }
 
 span.memo.highlighted {
   transform: scale(130%);
+  border: solid var(--accent) 1px;
   z-index: 2;
+}
+
+span.memo > h1.memo-name {
+  font-size: var(--font-lg);
+  text-decoration: none;
+  line-height: var(--font-lg);
+  margin: 1rem 0 1rem 0;
+}
+
+span.memo > span.memo-content {
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  margin: 0 0 1rem 0;
+}
+
+span.memo > span.memo-priority {
+  box-sizing: border-box;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: 0rem;
+  left: 0rem;
+  padding: 0 1rem;
+  width: 100%;
+  height: 1rem;
+  font-size: var(--font-sm);
+  font-weight: bold;
+  line-height: cal(var(--font-sm) -1px);
+}
+
+span.memo > span.memo-priority.high {
+  background-color: var(--p1);
+}
+
+span.memo > span.memo-priority.medium {
+  background-color: var(--p2);
+}
+
+span.memo > span.memo-priority.low {
+  background-color: var(--p3);
+}
+
+span.memo > span.memo-priority > span.icon-spacer > span.icon {
+  font-size: var(--font-md);
+  line-height: var(--font-md);
+  margin-left: 0.25rem;
+  color: transparent;
+}
+
+span.memo:hover > span.memo-priority > span.icon-spacer > span.icon {
+  color: var(--text);
 }

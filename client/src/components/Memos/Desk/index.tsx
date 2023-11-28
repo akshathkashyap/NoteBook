@@ -114,7 +114,7 @@ const Desk: FC = () => {
                   colsMemos.length === numCols && colsMemos[index].map((memo: MemoType) => {
                     return (
                       <Fragment key={ memo.id }>
-                        <Memo memo={ memo } setMemo={ setMemos } />
+                        <Memo memo={ memo } />
                       </Fragment>
                     );
                   })

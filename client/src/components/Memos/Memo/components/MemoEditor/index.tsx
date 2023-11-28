@@ -12,7 +12,7 @@ import './index.css';
 
 interface MemoPropsType {
   memo: MemoType
-  setMemo: React.Dispatch<React.SetStateAction<MemoType[]>>
+  setEditState: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 lowlight.registerLanguage('html', html);
@@ -20,7 +20,7 @@ lowlight.registerLanguage('css', css);
 lowlight.registerLanguage('js', js);
 lowlight.registerLanguage('ts', ts);
 
-const MemoEditor: FC<MemoPropsType> = ({ memo, setMemo }) => {
+const MemoEditor: FC<MemoPropsType> = ({ memo, setEditState }) => {
   const extensions = [
     StarterKit,
     CodeBlockLowlight.configure({

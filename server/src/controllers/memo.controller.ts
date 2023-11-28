@@ -169,7 +169,7 @@ export const updateMemo = async (request: Request, response: Response): Promise<
 
   try {
     const { id, name, priority, content }: Partial<MemoDocument> = request.body;
-    if (!id || (!name && !content)) {
+    if (!id || (!name && !content && !priority)) {
       responseObject.message = `empty or missing request body parameters: received { id: ${id}, name: ${name}, content: ${content} }`;
       throw new Error(responseObject.message);
     }

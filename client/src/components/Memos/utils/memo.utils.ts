@@ -9,6 +9,13 @@ export interface MemoType {
   content: string;
 }
 
+interface UpdateRequestType {
+  memoId: string;
+  name?: string;
+  priority?: string;
+  content?: string;
+}
+
 const APIEndpoints = {
   create: '/memo/create',
   get: '/memo',
@@ -81,6 +88,38 @@ export const fetchAuthorsReceivedMemos = async (): Promise<MemoType[]> => {
   const memos = response.memos as unknown as MemoType[];
 
   return memos;
+};
+
+export const updateMemo = async (updateProps: UpdateRequestType): Promise<boolean> => {
+  const endpoint: string = APIEndpoints.update;
+  const requesterApi = new RequestApi({ endpoint });
+
+  const data: any = {};
+  if (!updateProps.memoId) {
+    console.error('no memoId');
+    return false;
+  }
+  data.id = updateProps.memoId;
+
+  if (updateProps.name !== undefined) {
+    data.name = updateProps.name;
+  }
+
+  if (updateProps.priority !== undefined) {
+    data.priority = updateProps.priority;
+  }
+
+  if (updateProps.content !== undefined) {
+    data.content = updateProps.content;
+  }
+
+  const response: Record<string, string> | null = await requesterApi.post({ data });
+  if (!response) {
+    console.error(`failed to delete author's memo`);
+    return false;
+  }
+
+  return true;
 };
 
 export const deleteMemo = async (memoId: string): Promise<boolean> => {
