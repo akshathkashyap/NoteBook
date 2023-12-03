@@ -11,24 +11,40 @@ export const getRem = (): number => {
   return baseFontSizeNumber;
 };
 
-export const fetchDeskMemos = (memoTab: 'personal' | 'received' | 'sent' | null): MemoType[] => {
+export const fetchDeskMemos = (memoTab: 'personal' | 'received' | 'sent' | null, options?: { parse?: boolean }): MemoType[] | string => {
   if (!memoTab) return [];
-  let memos: MemoType[];
+  let memos: MemoType[] | string;
   switch (memoTab) {
     case 'personal': {
-      memos = fetchSessionStorage.memo.usersMemos();
+      if (options?.parse) {
+        memos = fetchSessionStorage.memo.usersMemos({ parse: true }) as MemoType[];
+      } else {
+        memos = fetchSessionStorage.memo.usersMemos() as string;
+      }
       break;
     }
     case 'received': {
-      memos = fetchSessionStorage.memo.receivedMemos();
+      if (options?.parse) {
+        memos = fetchSessionStorage.memo.receivedMemos({ parse: true }) as MemoType[];
+      } else {
+        memos = fetchSessionStorage.memo.receivedMemos() as string;
+      }
       break;
     }
     case 'sent': {
-      memos = fetchSessionStorage.memo.sentMemos();
+      if (options?.parse) {
+        memos = fetchSessionStorage.memo.sentMemos({ parse: true }) as MemoType[];
+      } else {
+        memos = fetchSessionStorage.memo.sentMemos() as string;
+      }
       break;
     }
     default: {
-      memos = [];
+      if (options?.parse) {
+        memos = [];
+      } else {
+        memos = '[]';
+      }
     }
   }
 

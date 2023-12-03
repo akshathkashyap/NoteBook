@@ -7,7 +7,7 @@ import js from 'highlight.js/lib/languages/javascript';
 import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { lowlight } from 'lowlight';
-import { MemoType } from '../../../utils';
+import { MemoType } from '../../../../../utils';
 import './index.css';
 
 interface MemoPropsType {

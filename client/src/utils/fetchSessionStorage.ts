@@ -2,17 +2,20 @@ import { MemoType } from "../components/Memos/utils";
 
 const fetchSessionStorage = {
   memo: {
-    usersMemos: () => {
-      const memos: MemoType[] = JSON.parse(sessionStorage.getItem('usersMemos') ?? '[]');
-      return memos;
+    usersMemos: (options?: { parse?: boolean }): string | MemoType[] => {
+      const memos: string = sessionStorage.getItem('usersMemos') ?? '[]';
+      if (!options?.parse) return memos;
+      return JSON.parse(memos) as MemoType[];
     },
-    receivedMemos: () => {
-      const memos: MemoType[] = JSON.parse(sessionStorage.getItem('receivedMemos') ?? '[]');
-      return memos;
+    receivedMemos: (options?: { parse?: boolean }): string | MemoType[] => {
+      const memos: string = sessionStorage.getItem('receivedMemos') ?? '[]';
+      if (!options?.parse) return memos;
+      return JSON.parse(memos) as MemoType[];
     },
-    sentMemos: () => {
-      const memos: MemoType[] = JSON.parse(sessionStorage.getItem('sentMemos') ?? '[]');
-      return memos;
+    sentMemos: (options?: { parse?: boolean }): string | MemoType[] => {
+      const memos: string = sessionStorage.getItem('sentMemos') ?? '[]';
+      if (!options?.parse) return memos;
+      return JSON.parse(memos) as MemoType[];
     }
   }
 };

@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMemoTab, setHighlightMemoId, setAddingMemo, setRemovingMemo } from '../../../store/slices/memoSlice';
+import { setMemoTab } from '../../../store/slices/memoSlice';
 import { RootState } from '../../../store/rootReducer';
+import events from '../events';
 import { MemoType, sortMemosList, fetchAuthorMemos, fetchAuthorsReceivedMemos } from '../utils';
 import { updateSessionStorage, fetchSessionStorage } from '../../../utils';
 import './index.css';
@@ -9,12 +10,10 @@ import './index.css';
 const Sidebar: FC = () => {
   const dispatch = useDispatch();
   const memoTab = useSelector((state: RootState) => state.memo.memoTab);
-  const addingMemo = useSelector((state: RootState) => state.memo.addingMemo);
-  const isRemovingMemo = useSelector((state: RootState) => state.memo.removingMemo);
 
-  const usersMemos: MemoType[] = fetchSessionStorage.memo.usersMemos();
-  const receivedMemos: MemoType[] = fetchSessionStorage.memo.receivedMemos();
-  const sentMemos: MemoType[] = fetchSessionStorage.memo.sentMemos();
+  const usersMemos = fetchSessionStorage.memo.usersMemos({ parse: true }) as MemoType[];
+  const receivedMemos = fetchSessionStorage.memo.receivedMemos({ parse: true }) as MemoType[];
+  const sentMemos = fetchSessionStorage.memo.sentMemos({ parse: true }) as MemoType[];
 
   const recentUsersMemos: MemoType[] = sortMemosList(usersMemos, 'latest-first', 5);
   const recentReceivedMemos: MemoType[] = sortMemosList(receivedMemos, 'latest-first', 5);
@@ -27,7 +26,8 @@ const Sidebar: FC = () => {
   const addMemo = (event: React.MouseEvent) => {
     const target = event.currentTarget;
     target.classList.add('adding');
-    dispatch(setAddingMemo(true));
+
+    events.emit('memoAdd');
   };
 
   const updateUsersMemos = async (): Promise<void> => {
@@ -43,8 +43,19 @@ const Sidebar: FC = () => {
       sent.push(memo);
     });
 
-    updateSessionStorage.memo.usersMemos(personal);
-    updateSessionStorage.memo.sentMemos(sent);
+    const currentPersonalMemos = fetchSessionStorage.memo.usersMemos() as string;
+    const personalJson: string = JSON.stringify(personal);
+    const currentSentMemos = fetchSessionStorage.memo.sentMemos() as string;
+    const sentJson: string = JSON.stringify(sent);
+
+    if (currentPersonalMemos === personalJson) {
+      if (currentSentMemos === sentJson) return;
+      updateSessionStorage.memo.sentMemos(sent);
+    } else {
+      updateSessionStorage.memo.usersMemos(personal);
+      if (currentSentMemos !== sentJson) updateSessionStorage.memo.sentMemos(sent);
+    }
+    events.emit('sessionStorageUpdated');
 
     personal = sortMemosList(personal, 'latest-first', 5);
     sent = sortMemosList(sent, 'latest-first', 5);
@@ -55,7 +66,14 @@ const Sidebar: FC = () => {
 
   const updateReceivedMemos = async (): Promise<void> => {
     let received: MemoType[] = await fetchAuthorsReceivedMemos();
+
+    const currentReceivedMemos = fetchSessionStorage.memo.receivedMemos() as string;
+    const receivedJson: string = JSON.stringify(received);
+
+    if (currentReceivedMemos === receivedJson) return;
+
     updateSessionStorage.memo.receivedMemos(received);
+    events.emit('sessionStorageUpdated');
 
     received = sortMemosList(received, 'latest-first', 5);
     setAutherReceivedMemos(received);
@@ -75,11 +93,7 @@ const Sidebar: FC = () => {
 
   const handleMemoHighlight = (memoId: string, tab: string) => {
     handleMemoTabSelection(tab)
-    dispatch(setHighlightMemoId(memoId));
-    
-    setTimeout(() => {
-      dispatch(setHighlightMemoId(null));
-    }, 250);
+    events.emit('memoHighlight', memoId);
   };
 
   useEffect(() => {
@@ -91,17 +105,16 @@ const Sidebar: FC = () => {
       updateReceivedMemos();
     }, 5000);
 
+    const removeMemoUpdateEventListener = events.on('memosUpdate', () => {
+      updateUsersMemos();
+      updateReceivedMemos();
+    });
+
     return () => {
       clearInterval(sidebarReloader);
+      removeMemoUpdateEventListener();
     };
   }, []);
-
-  useEffect(() => {
-    updateUsersMemos();
-    updateReceivedMemos();
-
-    if (isRemovingMemo) dispatch(setRemovingMemo(false));
-  }, [dispatch, isRemovingMemo]);
 
   return (
     <>
@@ -110,7 +123,7 @@ const Sidebar: FC = () => {
         onClick={() => handleMemoTabSelection ('My Memos')}
       >My Memos
         <span className='icon-spacer'>
-          <span className={`material-symbols-outlined icon ${addingMemo ? 'adding': ''}`} onClick={ addMemo }>
+          <span className={`material-symbols-outlined icon`} onClick={ addMemo }>
             note_stack_add
           </span>
         </span>

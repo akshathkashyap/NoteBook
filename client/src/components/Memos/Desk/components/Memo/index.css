@@ -71,6 +71,7 @@ span.memo > span.memo-priority.low {
 }
 
 span.memo > span.memo-priority > span.icon-spacer > span.icon {
+  user-select: none;
   font-size: var(--font-md);
   line-height: var(--font-md);
   margin-left: 0.25rem;

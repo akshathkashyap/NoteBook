@@ -1,17 +1,15 @@
 import { FC , useRef, useEffect, useState, Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/rootReducer';
+import events from '../events';
 import { MemoType, sortMemosList, getRem, fetchDeskMemos } from '../utils';
-import Memo from '../Memo';
+import Memo from './components/Memo';
 import './index.css';
-import { setRemovingMemo } from '../../../store/slices/memoSlice';
 
 const Desk: FC = () => {
-  const dispatch = useDispatch();
   const memoTab = useSelector((state: RootState) => state.memo.memoTab);
-  const isRemovingMemo = useSelector((state: RootState) => state.memo.removingMemo);
 
-  const deskMemosRef = useRef<MemoType[]>(fetchDeskMemos(memoTab));
+  const deskMemosRef = useRef<MemoType[]>(fetchDeskMemos(memoTab, { parse: true }) as MemoType[]);
   const sortedDeskMemosRef = useRef<MemoType[]>(sortMemosList(deskMemosRef.current, 'latest-last'));
 
   const [numCols, setNumCols] = useState<number>(1);
@@ -78,30 +76,22 @@ const Desk: FC = () => {
   useEffect(() => {
     if (!memoTab) return;
     
-    deskMemosRef.current = fetchDeskMemos(memoTab);
+    deskMemosRef.current = fetchDeskMemos(memoTab, { parse: true }) as MemoType[];
     sortedDeskMemosRef.current = sortMemosList(deskMemosRef.current, 'latest-last');
 
     setMemos(sortedDeskMemosRef.current);
-    
-    const deskReloader = setInterval(() => {
-      const updatedDeskMemos: MemoType[] = fetchDeskMemos(memoTab);
-      const updatedDeskMemosString: string = JSON.stringify(updatedDeskMemos);
-      const currentDeskMemosString: string = JSON.stringify(deskMemosRef.current);
 
-      if (currentDeskMemosString === updatedDeskMemosString) return;
-
-      deskMemosRef.current = updatedDeskMemos;
+    const removeMemoUpdateEventListener = events.on('sessionStorageUpdated', () => {
+      deskMemosRef.current = fetchDeskMemos(memoTab, { parse: true }) as MemoType[];
       sortedDeskMemosRef.current = sortMemosList(deskMemosRef.current, 'latest-last');
-      
-      setMemos(sortedDeskMemosRef.current);
-    }, 5000);
 
-    if (isRemovingMemo) dispatch(setRemovingMemo(false));
+      setMemos(sortedDeskMemosRef.current);
+    });
 
     return () => {
-      clearInterval(deskReloader);
+      removeMemoUpdateEventListener();
     };
-  }, [dispatch, memoTab, isRemovingMemo]);
+  }, [memoTab]);
 
   return (
     <section className='memos-desk'>

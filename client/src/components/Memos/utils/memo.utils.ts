@@ -12,7 +12,7 @@ export interface MemoType {
 interface UpdateRequestType {
   memoId: string;
   name?: string;
-  priority?: string;
+  priority?: number;
   content?: string;
 }
 
