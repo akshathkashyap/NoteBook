@@ -27,13 +27,12 @@ const sessionStorage = {
 
 const Memo: FC<MemoPropsType> = ({ memo }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-
+  
   const memoTab = useSelector((state: RootState) => state.memo.memoTab);
-
+  
   const memoCardRef = useRef<HTMLSpanElement | null>(null);
   const memoNameRef = useRef<HTMLHeadingElement | null>(null);
   const [memoPriority, setMemoPriority] = useState<string>(memoPriorities[memo.priority - 1]);
-  const [memoPriorityShouldSave, setMemoPriorityShouldSave] = useState<boolean>(false);
 
   const updateMemoName = async () => {
     const memoName = memoNameRef.current;
@@ -60,22 +59,21 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
     const priority: number = memoPriorities.indexOf(memoPriority) + 1;
     if (priority <= 0) return;
 
-    const updatedResponse: boolean = await updateMemo({ memoId: memo.id, priority });
-    if (!updatedResponse) return;
-
     if (!memoTab) return;
     const memos: MemoType[] = sessionStorage.from[memoTab]();
 
     const memoIndex: number = memos.findIndex((m: MemoType) => m.id === memo.id);
     if (memoIndex < 0) return;
-
+    if (memos[memoIndex].priority === priority) return;
+    
+    const updatedResponse: boolean = await updateMemo({ memoId: memo.id, priority });
+    if (!updatedResponse) return;
+    
     memos[memoIndex].priority = priority;
-
     sessionStorage.to[memoTab](memos);
 
     events.emit('memosUpdate', memo.id);
   }, [memo, memoTab, memoPriority]);
-  const updateMemoPriorityRef = useRef(updateMemoPriority);
 
   const removeMemo = async () => {
     const deleteResult: boolean = await deleteMemo(memo.id);
@@ -104,13 +102,13 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
   };
 
   const memoPriorityClickHandler = () => {
-    setMemoPriorityShouldSave(false);
-
     const priority: number = memoPriorities.indexOf(memoPriority);
     if (priority < 0) return;
 
-    setMemoPriority(memoPriorities[(priority + 1) % 3]);
-    setMemoPriorityShouldSave(true);
+    const newMemoPriority: string = memoPriorities[(priority + 1) % 3];
+    if (memoPriority === newMemoPriority) return;
+
+    setMemoPriority(newMemoPriority);
   };
 
   const memoContentClickHandler = () => {
@@ -156,15 +154,13 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
 
   useEffect(() => {
     const prioritySaveTimeout = setTimeout(() => {
-      updateMemoPriorityRef.current();
+      updateMemoPriority();
     }, 1000);
-
-    if (!memoPriorityShouldSave) clearTimeout(prioritySaveTimeout);
 
     return () => {
       clearTimeout(prioritySaveTimeout);
     };
-  }, [memoPriorityShouldSave]);
+  }, [updateMemoPriority]);
 
   return (
     <span ref={ memoCardRef } className={`memo ${isEditing ? 'editing' : ''}`}>
