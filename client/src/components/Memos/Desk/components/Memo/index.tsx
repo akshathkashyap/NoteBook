@@ -5,6 +5,7 @@ import events from '../../../events';
 import { fetchSessionStorage, updateSessionStorage } from '../../../../../utils';
 import { MemoType, deleteMemo, updateMemo } from '../../../utils';
 import './index.css';
+import MemoContent from './components/MemoContent';
 
 interface MemoPropsType {
   memo: MemoType
@@ -25,9 +26,7 @@ const sessionStorage = {
   }
 };
 
-const Memo: FC<MemoPropsType> = ({ memo }) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  
+const Memo: FC<MemoPropsType> = ({ memo }) => {  
   const memoTab = useSelector((state: RootState) => state.memo.memoTab);
   
   const memoCardRef = useRef<HTMLSpanElement | null>(null);
@@ -58,10 +57,10 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
   const updateMemoPriority = useCallback( async () => {
     const priority: number = memoPriorities.indexOf(memoPriority) + 1;
     if (priority <= 0) return;
-
+    
     if (!memoTab) return;
     const memos: MemoType[] = sessionStorage.from[memoTab]();
-
+    
     const memoIndex: number = memos.findIndex((m: MemoType) => m.id === memo.id);
     if (memoIndex < 0) return;
     if (memos[memoIndex].priority === priority) return;
@@ -71,7 +70,7 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
     
     memos[memoIndex].priority = priority;
     sessionStorage.to[memoTab](memos);
-
+    
     events.emit('memosUpdate', memo.id);
   }, [memo, memoTab, memoPriority]);
 
@@ -111,10 +110,6 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
     setMemoPriority(newMemoPriority);
   };
 
-  const memoContentClickHandler = () => {
-    setIsEditing(true);
-  };
-
   const memoNameKeyDownHandler = (event: React.KeyboardEvent) => {
     const memoName = memoNameRef.current;
     if (!memoName) return;
@@ -128,7 +123,7 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
         event.preventDefault();
       }
     }
-
+    
     if (event.key === 'Enter') updateMemoName();
   };
 
@@ -163,7 +158,7 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
   }, [updateMemoPriority]);
 
   return (
-    <span ref={ memoCardRef } className={`memo ${isEditing ? 'editing' : ''}`}>
+    <span ref={ memoCardRef } className='memo'>
       <span className={`memo-priority ${memoPriority}`}>{ new Date(memo.updatedAt).toDateString()}
         <span className='icon-spacer'>
           <span className='material-symbols-outlined icon' onClick={ memoPriorityClickHandler }>
@@ -171,9 +166,6 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
           </span>
           <span className='material-symbols-outlined icon'>
             send
-          </span>
-          <span className='material-symbols-outlined icon' onClick={ memoContentClickHandler }>
-            edit
           </span>
           <span className='material-symbols-outlined icon' onClick={ removeMemo }>
             delete
@@ -187,8 +179,8 @@ const Memo: FC<MemoPropsType> = ({ memo }) => {
         onBlur={ updateMemoName }
         onClick={ memoNameClickHandler }
         onKeyDown={ memoNameKeyDownHandler }
-        >{ memo.name }</h1>
-      <span className='memo-content'>{ memo.content }</span>
+      >{ memo.name }</h1>
+      <MemoContent memoId={ memo.id } content={ memo.content } />
     </span>
   );
 };

@@ -1,0 +1,61 @@
+section.memo-menu {
+  box-sizing: border-box;
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  left: 0;
+  padding: 0.5rem 1rem;
+  background-color: var(--accent);
+  box-shadow: 1px 1px 2px var(--text);
+  border-radius: var(--border-rd-md);
+  z-index: 2;
+}
+
+section.memo-menu > span.menu-item {
+  cursor: pointer;
+  color: var(--text);
+}
+
+section.memo-menu > span.menu-item.active {
+  text-decoration: underline;
+  text-decoration-color: var(--background);
+}
+
+div.tiptap.ProseMirror {
+  font-size: var(--font-md);
+  margin: 0 0 0.5rem 0;
+  padding: 0.5rem 1rem;
+}
+
+/* div.tiptap.ProseMirror.ProseMirror-focused:focus-visible {
+  background-color: var(--secondary);
+} */
+
+div.tiptap.ProseMirror > *:first-of-type {
+  margin-top: 0;
+}
+
+ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+}
+
+ul[data-type="taskList"] > li {
+  display: flex;
+}
+
+ul[data-type="taskList"] > li > label {
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+ul[data-type="taskList"] > li > div {
+  flex: 1 1 auto;
+}
+
+ul[data-type="taskList"] > li > div >  p {
+  margin: 0;
+}
